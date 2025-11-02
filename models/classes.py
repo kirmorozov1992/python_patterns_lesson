@@ -220,3 +220,54 @@ class PostgresMetadataProcessor(MetadataProcessor):
             max_id = result[0]
 
             return min_id, max_id
+        
+class PostgresFullSnapshotter(Snapshotter):
+    def __init__(self, *, conn: connection) -> None:
+        self.conn = conn
+
+    def snapshot(
+        self, *,
+        source_schema: str,
+        source_table: str,
+        target_schema: str,
+        target_table: str
+    ):
+        with self.conn.cursor() as cur:
+            cur.execute(f"""
+                truncate table {target_schema}.{target_table};
+            """)
+
+            cur.execute(f"""
+                insert into {target_schema}.{target_table}
+                select * from {source_schema}.{source_table};
+            """)
+
+        self.conn.commit()
+
+class PostgresIncrementalSnapshotter(Snapshotter):
+    def __init__(self, *, conn: connection):
+        self.conn = conn
+
+    def snapshot(
+        self, *,
+        source_schema: str,
+        source_table: str,
+        id_col: str,
+        target_schema: str,
+        target_table: str,
+        min_id: int,
+        max_id: int,
+        offset: int
+    ):
+        with self.conn.cursor() as cur:
+            cur.execute(f"truncate {target_schema}.{target_table};")
+            while min_id <= max_id:
+                cur.execute(f"""
+                    insert into {target_schema}.{target_table}
+                    select *, localtimestamp, false
+                    from {source_schema}.{source_table}
+                    where {id_col} >= {min_id} and {id_col} < {min_id + offset};
+                """)
+                min_id += offset
+        self.conn.commit()
+        
