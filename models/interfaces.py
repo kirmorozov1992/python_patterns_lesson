@@ -3,62 +3,62 @@ from typing import Any
 
 class MetadataProcessor(ABC):
     @abstractmethod
-    def get_datetime_job_run(self, *, conn: Any):
+    def get_datetime_job_run(self):
         pass
 
     @abstractmethod
-    def update_datetime_job_run(self, *, conn: Any, **kwargs):
+    def update_datetime_job_run(self, **kwargs):
         pass
 
     @abstractmethod
-    def get_current_date(self, *, conn: Any):
+    def get_current_date(self):
         pass
 
     @abstractmethod
-    def get_column_names(self, *, conn: Any, **kwargs):
+    def get_column_names(self, *kwargs):
         pass
 
     @abstractmethod
-    def get_clauses(self, *, conn: Any, **kwargs):
+    def get_clauses(self, **kwargs):
         pass
 
     @abstractmethod
-    def get_job_meta(self, *, conn: Any, **kwargs):
+    def get_job_meta(self, **kwargs):
         pass
 
     @abstractmethod
-    def get_id_col_data_type(self, *, conn: Any, **kwargs):
+    def get_id_col_data_type(self, *kwargs):
         pass
 
     @abstractmethod
-    def get_old_log_count(self, *, conn: Any, **kwargs):
+    def get_old_log_count(self, **kwargs):
         pass
 
     @abstractmethod
-    def get_new_log_count(self, *, conn: Any, **kwargs):
+    def get_new_log_count(self, **kwargs):
         pass
 
     @abstractmethod
-    def set_log_count(self, *, conn: Any, **kwargs):
+    def set_log_count(self, **kwargs):
         pass
 
     @abstractmethod
-    def make_day_offset(self, *, conn: Any, **kwargs):
+    def make_day_offset(self, **kwargs):
         pass
 
     @abstractmethod
-    def get_min_max_value(self, *, conn: Any, **kwargs):
+    def get_min_max_value(self, **kwargs):
         pass
     
 
 class Creator(ABC):
     @abstractmethod
-    def create_table(self, *, conn: Any, **kwargs):
+    def create_table(self, **kwargs):
         pass
 
 class Snapshotter(ABC):
     @abstractmethod
-    def snapshot(self, *, conn: Any):
+    def snapshot(self, **kwargs):
         pass
 
 class Loader(ABC):
