@@ -15,11 +15,11 @@ class MetadataProcessor(ABC):
         pass
 
     @abstractmethod
-    def get_column_names(self, *, conn: Any):
+    def get_column_names(self, *, conn: Any, **kwargs):
         pass
 
     @abstractmethod
-    def get_clause(self, *, conn: Any, **kwargs):
+    def get_clauses(self, *, conn: Any, **kwargs):
         pass
 
     @abstractmethod
@@ -31,11 +31,15 @@ class MetadataProcessor(ABC):
         pass
 
     @abstractmethod
-    def get_log_count(self, *, conn: Any, **kwargs):
+    def get_old_log_count(self, *, conn: Any, **kwargs):
         pass
 
     @abstractmethod
-    def set_log_count(self, *, conn: Any):
+    def get_new_log_count(self, *, conn: Any, **kwargs):
+        pass
+
+    @abstractmethod
+    def set_log_count(self, *, conn: Any, **kwargs):
         pass
 
     @abstractmethod
